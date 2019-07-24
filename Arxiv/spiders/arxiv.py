@@ -27,13 +27,11 @@ class ArxivSpider(scrapy.Spider):
             item['title'] = title[0]
 
             authors = ''
-            # authors'  father node
-            xpath_fa = '//*[@id="dlpage"]/dl/dd[' + str(index) + ']/div/div[2]//a'
-            author_list = response.xpath(xpath_fa)
-            for i in author_list:
-                authors += (author_list.xpath('string(.)').extract_first() + ', ')
-            # remove last ', '
-            authors = authors[:-2]
+            # authors list
+            xpath_a = '//*[@id="dlpage"]/dl/dd[' + str(index) + ']/div/div[2]//a/text'
+            author_list=reponse.xpath(xpath_a).getall()
+            authors = str.join('',author_list)
+          
             item['authors'] = authors
 
             item['subjects']=response.xpath('string(//*[@id="dlpage"]/dl/dd['+str(5)+']/div/div[5]/span[2])').extract_first()
